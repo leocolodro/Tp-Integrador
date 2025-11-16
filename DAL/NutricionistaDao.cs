@@ -77,5 +77,71 @@ namespace DAL
                 throw;
             }
         }
+
+        public void InsertNutri(NutricionistaBE nutricionista)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand("INSERT INTO NUTRICIONISTA (MATRICULA, NOMBRE, APELLIDO) VALUES (@Matricula, @Nombre, @Apellido)", conexion))
+                    {
+                        comando.Parameters.AddWithValue("@Matricula", nutricionista.Matricula);
+                        comando.Parameters.AddWithValue("@Nombre", nutricionista.Nombre);
+                        comando.Parameters.AddWithValue("@Apellido", nutricionista.Apellido);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void DeleteNutri(int idNutricionista)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand("DELETE FROM NUTRICIONISTA WHERE ID_NUTRICIONISTA = @IdNutricionista", conexion))
+                    {
+                        comando.Parameters.AddWithValue("@IdNutricionista", idNutricionista);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateNutri(NutricionistaBE nutricionista)
+        {
+            try
+            {
+                using (SqlConnection conexion = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand("UPDATE NUTRICIONISTA SET MATRICULA = @Matricula, NOMBRE = @Nombre, APELLIDO = @Apellido WHERE ID_NUTRICIONISTA = @IdNutricionista", conexion))
+                    {
+                        comando.Parameters.AddWithValue("@Matricula", nutricionista.Matricula);
+                        comando.Parameters.AddWithValue("@Nombre", nutricionista.Nombre);
+                        comando.Parameters.AddWithValue("@Apellido", nutricionista.Apellido);
+                        comando.Parameters.AddWithValue("@IdNutricionista", nutricionista.IdNutricionista);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

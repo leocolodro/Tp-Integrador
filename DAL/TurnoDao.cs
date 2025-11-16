@@ -45,6 +45,134 @@ namespace DAL
 			}
         }
 
+        public void InsertTurno(TurnoBE turno)
+        {
+            try
+            {
+                using(SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("INSERT INTO TURNO (ID_PACIENTE, ID_NUTRICIONISTA, FECHA_HORA, ESTADO, NOTA) VALUES (@Paciente, @Nutricionista, @FechaHora, @Estado, @Nota)", cone))
+                    {
+                        comando.Parameters.AddWithValue("@Paciente", turno.Paciente.IdPaciente);
+                        comando.Parameters.AddWithValue("@Nutricionista", turno.Nutricionista.IdNutricionista);
+                        comando.Parameters.AddWithValue("@FechaHora", turno.FechaHora);
+                        comando.Parameters.AddWithValue("@Estado", turno.Estado);
+                        comando.Parameters.AddWithValue("@Nota", turno.Nota ?? (object)DBNull.Value);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void DeleteTurno(int idTurno)
+        {
+            try
+            {
+                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("DELETE FROM TURNO WHERE ID_TURNO = @IdTurno", cone))
+                    {
+                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateHorarioTurno(int idTurno, DateTime nuevoHorario)
+        {
+            try
+            {
+                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET FECHA_HORA = @NuevoHorario WHERE ID_TURNO = @IdTurno", cone))
+                    {
+                        comando.Parameters.AddWithValue("@NuevoHorario", nuevoHorario);
+                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateRealizarTurno(int idTurno, string nota)
+        {
+            try
+            {
+                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET ESTADO = 'REALIZADO', NOTA = @Nota WHERE ID_TURNO = @IdTurno", cone))
+                    {
+                        comando.Parameters.AddWithValue("@Nota", nota);
+                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateCancelarTurno(int idTurno)
+        {
+            try
+            {
+                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET ESTADO = 'CANCELADO' WHERE ID_TURNO = @IdTurno", cone))
+                    {
+                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void CambiarNutricionistaTurno(int idTurno, int idNuevoNutricionista)
+        {
+            try
+            {
+                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET ID_NUTRICIONISTA = @IdNutricionista WHERE ID_TURNO = @IdTurno", cone))
+                    {
+                        comando.Parameters.AddWithValue("@IdNutricionista", idNuevoNutricionista);
+                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
     }
 }
