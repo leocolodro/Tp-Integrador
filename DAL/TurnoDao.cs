@@ -45,7 +45,7 @@ namespace DAL
 			}
         }
 
-        public void InsertTurno(TurnoBE turno)
+        public void AgregarTurno(TurnoBE turno)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace DAL
             }
         }
 
-        public void DeleteTurno(int idTurno)
+        public void EliminarTurno(int idTurno)
         {
             try
             {
@@ -90,7 +90,7 @@ namespace DAL
             }
         }
 
-        public void UpdateHorarioTurno(int idTurno, DateTime nuevoHorario)
+        public void ModificarHorarioBLL(int idTurno, DateTime nuevoHorario)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace DAL
             }
         }
 
-        public void UpdateRealizarTurno(int idTurno, string nota)
+        public void RealizarTurno(int idTurno, string nota)
         {
             try
             {
@@ -132,27 +132,9 @@ namespace DAL
             }
         }
 
-        public void UpdateCancelarTurno(int idTurno)
-        {
-            try
-            {
-                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
-                {
-                    cone.Open();
-                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET ESTADO = 'CANCELADO' WHERE ID_TURNO = @IdTurno", cone))
-                    {
-                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
-                        comando.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+       
 
-        public void CambiarNutricionistaTurno(int idTurno, int idNuevoNutricionista)
+        public void CambiarNutriTurno(int idTurno, int idNuevoNutricionista)
         {
             try
             {
