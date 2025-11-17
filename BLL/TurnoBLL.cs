@@ -95,9 +95,27 @@ namespace BLL
             }
         }
         
-        public void RealizarTurnoBLL(int idturno)
+        public void RealizarTurnoBLL(int idturno,string detalle)
         {
+            try
+            {
+                using (var trx = new TransactionScope())
+                {
+                    if (idturno <= 0)
+                        throw new ArgumentException("ID de turno inválido");
 
+                    ValDetalle(detalle);
+
+                    var turno = TurnoDAO.GetById(idturno);
+                    if (turno == null)
+                        throw new ArgumentException("El turno no existe");
+
+                    TurnoDAO.RealizarTurno(idturno,detalle);
+                    trx.Complete();
+                }
+            catch (Exception ex)
+            {
+            }
         }
         public void CambiarNutriTurnoBLL(int idturno, NutricionistaBE idNutri)
         {
