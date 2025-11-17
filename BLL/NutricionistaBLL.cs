@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using DAL;
 
 namespace BLL
 {
     public class NutricionistaBLL
     {
+        private NutricionistaDao NutricionistaDao = new NutricionistaDao();
         public void AgregarNutricionistaBLL(NutricionistaBE nutricionista)
         {
             if (nutricionista == null)
@@ -22,11 +24,9 @@ namespace BLL
                     ValNombre(nutricionista.Nombre);
                     ValApellido(nutricionista.Apellido);
                     ValMatricula(nutricionista.Matricula);
-                    NutricionistaDAO.AgregarNutricionista(nutricionista);
+                    NutricionistaDao.AgregarNutricionista(nutricionista);
                     trx.Complete();
                 }
-
-
             }
             catch (ArgumentException)
             {
@@ -46,7 +46,7 @@ namespace BLL
                     throw new ArgumentNullException("El ID del Nutricionista a Eliminar no puede ser nulo");
                     if (Idnutri < 0)
                         throw new ArgumentException("El ID del paciente no puede ser cero");
-                    var nutricionista = NutricionistaDAO.GetById(Idnutri);
+                    var nutricionista = NutricionistaDao.GetById(Idnutri);
                     if (nutricionista == null)
                         throw new ArgumentNullException("El Nutricionista solicitado no Existe.");
                     NutricionistaDao.EliminarNutricionista(Idnutri);

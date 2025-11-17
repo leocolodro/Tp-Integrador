@@ -1,10 +1,12 @@
-﻿using Entity;
+﻿using DAL;
+using Entity;
 using System.Transactions;
 
 namespace BLL
 {
     public class PacienteBLL
     {
+        private PacienteDao PacienteDao = new PacienteDao();
         public void AgregarPacienteBLL(PacienteBE paciente)
         {
             if (paciente == null)
@@ -17,10 +19,10 @@ namespace BLL
                     ValNombre(paciente.Nombre);
                     ValApellido(paciente.Apellido);
                     ValFechadeNac(paciente.FechaNacimiento);
-                    ValMail(paciente.Mail);
+                    ValMail(paciente.Email);
                     ValTelefono(paciente.Telefono);
-                    ValDNI(paciente.DNI);
-                    PacienteDAO.AgregarPaciente(paciente);
+                    ValDNI(paciente.Dni);
+                    PacienteDao.AgregarPaciente(paciente);
                     trx.Complete();
                 }
 
@@ -45,7 +47,7 @@ namespace BLL
                     throw new ArgumentNullException("El ID del Paciente a Eliminar no puede ser nulo");
                     if (Idpaciente < 0)
                         throw new ArgumentException("El ID del paciente no puede ser cero");
-                    var paciente = PacienteDAO.GetById(Idpaciente);
+                    var paciente = PacienteDao.GetById(Idpaciente);
                     if (paciente == null)
                         throw new ArgumentNullException("El Paciente solicitado no Existe.");
                     PacienteDao.EliminarPaciente(Idpaciente);

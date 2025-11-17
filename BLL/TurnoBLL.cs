@@ -1,4 +1,5 @@
-﻿using Entity;
+﻿using DAL;
+using Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace BLL
 {
     public class TurnoBLL
     {
+        private TurnoDao TurnoDAO = new TurnoDao();
         public void AgregarTurnoBLL(TurnoBE turno)
         {
             if (turno == null)
@@ -19,10 +21,9 @@ namespace BLL
             {
                 using (var trx = new TransactionScope())
                 {
-                    ValDetalle(turno.Detalle);
+                    
                     ValHorario(turno.FechaHora);
                     ValEstado(turno.Estado);
-                    ValNutri(turno.Nutricionista);
                     ValPaciente(turno.Paciente);
                     TurnoDAO.AgregarTurno(turno);
                     trx.Complete();
@@ -52,7 +53,7 @@ namespace BLL
                     var turno = TurnoDAO.GetById(IdTurno);
                     if (turno == null)
                         throw new ArgumentNullException("El Turno solicitado no Existe.");
-                    TurnoDao.EliminarTurno(IdTurno);
+                    TurnoDAO.EliminarTurno(IdTurno);
                     trx.Complete();
                 }
 
@@ -110,29 +111,7 @@ namespace BLL
                     if (turno == null)
                         throw new ArgumentException("El turno no existe");
 
-                    TurnoDAO.RealizarTurno(idturno,detalle);
-                    trx.Complete();
-                }
-            catch (Exception ex)
-            {
-            }
-        }
-        public void CambiarNutriTurnoBLL(int idturno, NutricionistaBE idNutri)
-        {
-            try
-            {
-                using (var trx = new TransactionScope())
-                {
-                    if (idturno <= 0)
-                        throw new ArgumentException("ID de turno inválido");
-
-                    ValNutri(idNutri);
-
-                    var Nutricionista =NutricionistaDAO.GetById(idNutri.IdNutricionista);
-                    if (Nutricionista == null)
-                        throw new ArgumentException("La película no existe");
-
-                    NutricionistaDAO.CambiarNutriTurno(idturno,idNutri);
+                    TurnoDAO.RealizarTurno(idturno, detalle);
                     trx.Complete();
                 }
             }
@@ -140,11 +119,9 @@ namespace BLL
             {
                 throw;
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Error al modificar Nutricionista: " + ex.Message);
-            }
+            
         }
+       
         //VALIDACIONES
         public void ValEstado(string estado)
         {
@@ -172,21 +149,14 @@ namespace BLL
             }
             catch (Exception ex) { }
         }
-        public void ValNutri(NutricionistaBE nutricionista)
-        {
-            if (nutricionista.IdNutricionista == 0)
-                throw new ArgumentException("El Nutricionista ingresado no puede ser cero)");
-            var nutri = NutricionistaDAO.GetById(nutricionista.IdNutricionista);
-            if (nutri == null)
-                throw new ArgumentNullException("El Nutricionista no existe.");
-        }
+       
         public void ValPaciente(PacienteBE paciente)
         {
             if (paciente.IdPaciente== 0)
-                throw new ArgumentException("El Nutricionista ingresado no puede ser cero)");
+                throw new ArgumentException("El paciente ingresado no puede ser cero)");
             var paci = TurnoDAO.GetById(paciente.IdPaciente);
             if (paci == null)
-                throw new ArgumentNullException("El Nutricionista no existe.");
+                throw new ArgumentNullException("El paciente no existe.");
         }
     }
     }

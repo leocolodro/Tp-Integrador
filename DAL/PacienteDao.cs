@@ -6,7 +6,7 @@ namespace DAL
 {
     public class PacienteDao
     {
-        internal PacienteBE GetById(int v)
+       public PacienteBE GetById(int v)
         {
 			try
 			{
