@@ -6,5 +6,10 @@ namespace NutriUAI
         {
             InitializeComponent();
         }
+
+        private void dgvTurno_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
