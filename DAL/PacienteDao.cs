@@ -78,7 +78,7 @@ namespace DAL
             }
         }
         
-        public void InsertPaciente(PacienteBE paciente)
+        public void AgregarPaciente(PacienteBE paciente)
         {
             try
             {
@@ -103,7 +103,7 @@ namespace DAL
             }
         }
 
-       public void DeletePaciente(int idPaciente)
+       public void EliminarPaciente(int idPaciente)
        {
             try
             {
@@ -123,30 +123,6 @@ namespace DAL
             }
        }
 
-        public void UpdatePaciente(PacienteBE paciente)
-        {
-            try
-            {
-                using (SqlConnection conexion = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
-                {
-                    conexion.Open();
-                    using (SqlCommand comando = new SqlCommand("UPDATE PACIENTE SET NOMBRE = @Nombre, APELLIDO = @Apellido, DNI = @Dni, FECHA_NACIMIENTO = @FechaNacimiento, EMAIL = @Email, TELEFONO = @Telefono WHERE ID_PACIENTE = @IdPaciente", conexion))
-                    {
-                        comando.Parameters.AddWithValue("@IdPaciente", paciente.IdPaciente);
-                        comando.Parameters.AddWithValue("@Nombre", paciente.Nombre);
-                        comando.Parameters.AddWithValue("@Apellido", paciente.Apellido);
-                        comando.Parameters.AddWithValue("@Dni", paciente.Dni);
-                        comando.Parameters.AddWithValue("@FechaNacimiento", paciente.FechaNacimiento);
-                        comando.Parameters.AddWithValue("@Email", paciente.Email);
-                        comando.Parameters.AddWithValue("@Telefono", paciente.Telefono);
-                        comando.ExecuteNonQuery();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
+        
     }
 }
