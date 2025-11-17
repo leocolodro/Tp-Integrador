@@ -132,29 +132,46 @@ namespace DAL
             }
         }
 
-       
-
-        public void CambiarNutriTurno(int idTurno, int idNuevoNutricionista)
+        public object GetById(int id)
         {
             try
             {
-                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                using(SqlConnection conexion = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
                 {
-                    cone.Open();
-                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET ID_NUTRICIONISTA = @IdNutricionista WHERE ID_TURNO = @IdTurno", cone))
+                    conexion.Open();
+                    using (SqlCommand comando = new SqlCommand("SELECT ID_TURNO, ID_PACIENTE, ID_NUTRICIONISTA, FECHA_HORA, ESTADO, NOTA FROM PACIENTE WHERE ID_PACIENTE = @IdPaciente", conexion))
                     {
-                        comando.Parameters.AddWithValue("@IdNutricionista", idNuevoNutricionista);
-                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
-                        comando.ExecuteNonQuery();
+                        comando.Parameters.AddWithValue("@ID_PACIENTE", id);
+                        using (SqlDataReader reader = comando.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                TurnoBE pacienteBE = new TurnoBE
+                                {
+                                    IdTurno = Convert.ToInt32(reader["ID_TURNO"]),
+                                    Paciente = reader["ID_PACIENTE"] as PacienteBE,
+                                    Nutricionista = reader["ID_NUTRICIONISTA"] as NutricionistaBE,
+                                    FechaHora = Convert.ToDateTime(reader["FECHA_HORA"]),
+                                    Estado = reader["ESTADO"].ToString(),
+                                    Nota = reader[reader.GetOrdinal("NOTA")] == DBNull.Value ? null : reader["NOTA"].ToString()
+
+
+                                };
+                                return pacienteBE;
+                            }
+                            else
+                            {
+                                return null; // o lanzar una excepción si no se encuentra
+                            }
+                        }
                     }
                 }
             }
             catch (Exception)
             {
+
                 throw;
             }
         }
-
-
     }
 }

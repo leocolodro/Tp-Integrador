@@ -120,7 +120,27 @@ namespace DAL
             }
         }
 
-        
 
+
+        public void CambiarNutriTurno(int idTurno, int idNuevoNutricionista)
+        {
+            try
+            {
+                using (SqlConnection cone = new SqlConnection(ConexionUtils.ObtenerCadenaConexion()))
+                {
+                    cone.Open();
+                    using (SqlCommand comando = new SqlCommand("UPDATE TURNO SET ID_NUTRICIONISTA = @IdNutricionista WHERE ID_TURNO = @IdTurno", cone))
+                    {
+                        comando.Parameters.AddWithValue("@IdNutricionista", idNuevoNutricionista);
+                        comando.Parameters.AddWithValue("@IdTurno", idTurno);
+                        comando.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
